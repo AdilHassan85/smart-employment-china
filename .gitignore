@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+.ipynb_checkpoints/
+.DS_Store
+
+# Note: data/raw/ai_jobs_market.csv aur models/*.pkl JAAN BOOJH KAR yahan exclude
+# NAHI kiye - Streamlit Cloud deployment ke liye zaroori hain aur size chota hai (~1.4MB).
+# Agar future mein bara dataset use karo (>50MB), tab inhe wapas .gitignore mein daalo
+# aur deploy-time training script use karo.

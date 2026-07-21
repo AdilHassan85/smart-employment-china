@@ -1,0 +1,28 @@
+data:
+  raw_path: "data/raw/ai_jobs_market.csv"
+  interim_path: "data/interim/cleaned_data.csv"
+  processed_path: "data/processed/model_ready_data.csv"
+
+model:
+  # Yeh dataset mein direct "employed/unemployed" label nahi hai (job-posting level data hai).
+  # Isliye demand_score (0-100) ko employability proxy ki tarah use karte hain:
+  # median se upar = "high demand" (1), warna "low demand" (0)
+  target_column: "high_demand"
+  salary_column: "annual_salary_usd"
+  test_size: 0.2
+  random_state: 42
+
+focus_country: "China"
+
+tier1_cities:
+  - "Beijing"
+  - "Shanghai"
+  - "Shenzhen"
+  - "Guangzhou"
+
+education_order:
+  Bootcamp/Self-taught: 1
+  Associate's: 2
+  Bachelor's: 3
+  Master's: 4
+  PhD: 5
