@@ -8,3 +8,4 @@ joblib
 matplotlib
 seaborn
 pyyaml
+pillow==10.4.0
