@@ -1,6 +1,6 @@
 """
 Smart Employment Prediction & Skill Recommendation System - Streamlit app.
-Real trained models (AI Jobs Market 2025-2026 dataset) se connected.
+Trained on the AI Jobs Market 2025-2026 dataset (14 countries, China focus).
 """
 import os
 import sys
@@ -37,10 +37,10 @@ employment_model, salary_model, feature_columns = load_models()
 jobs_df = load_reference_data()
 
 st.title("Smart Employment Prediction & Skill Recommendation")
-st.caption("AI/Tech job market data (14 countries, China focus) par based ML system")
+st.caption("An ML system based on AI/Tech job market data across 14 countries, with a China focus")
 
 with st.sidebar:
-    st.header("Apna profile enter karo")
+    st.header("Enter your profile")
     job_category = st.selectbox("Job category", sorted(jobs_df["job_category"].unique()))
     experience_level = st.selectbox("Experience level", sorted(jobs_df["experience_level"].unique()))
     years_experience = st.slider("Years of experience", 0, 20, 2)
@@ -50,9 +50,9 @@ with st.sidebar:
     remote_work = st.selectbox("Remote work", sorted(jobs_df["remote_work"].unique()))
     company_size = st.selectbox("Company size", sorted(jobs_df["company_size"].unique()))
     industry = st.selectbox("Industry", sorted(jobs_df["industry"].unique()))
-    skills = st.text_area("Apni skills likho (comma se separate)", "Python, SQL, Cloud")
-    is_llm_role = st.checkbox("LLM-related role hai?")
-    submit = st.button("Predict karo", type="primary")
+    skills = st.text_area("Your skills (comma-separated)", "Python, SQL, Cloud")
+    is_llm_role = st.checkbox("Is this an LLM-related role?")
+    submit = st.button("Predict", type="primary")
 
 if submit:
     col1, col2 = st.columns(2)
@@ -86,7 +86,7 @@ if submit:
         st.metric("Estimated annual salary (USD)", f"{salary_pred:,.0f}")
 
     with col2:
-        st.subheader("Kyun yeh prediction aayi (SHAP)")
+        st.subheader("Why this prediction (SHAP)")
         explainer = shap.TreeExplainer(employment_model)
         shap_values = explainer.shap_values(X_user)
         fig, ax = plt.subplots()
@@ -95,7 +95,7 @@ if submit:
 
     st.subheader("Recommended skills to learn")
     demand_index = build_skill_demand_index(jobs_df, skills_column="required_skills")
-    # Same job_category ke top postings ki skills ko target list ki tarah use karo
+    # Use the top postings in the same job category as the target skill list
     target_skills = (
         jobs_df[jobs_df["job_category"] == job_category]["required_skills"]
         .str.split("|").explode().str.strip().unique().tolist()
@@ -104,7 +104,7 @@ if submit:
     if recs:
         st.write(", ".join(recs))
     else:
-        st.write("Tumhari skills already is category ke top requirements cover kar rahi hain.")
+        st.write("Your skills already cover the top requirements in this category.")
 
     st.subheader("Top matched jobs")
     user_skills_text = " ".join(user_profile["skills"])
