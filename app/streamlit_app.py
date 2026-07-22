@@ -2,19 +2,20 @@
 Smart Employment Prediction & Skill Recommendation System - Streamlit app.
 Real trained models (AI Jobs Market 2025-2026 dataset) se connected.
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import streamlit as st
-import pandas as pd
 import joblib
-import shap
 import matplotlib.pyplot as plt
-
-from src.utils.predict_utils import build_feature_vector
-from src.recommend.skill_recommender import build_skill_demand_index, recommend_skills
+import pandas as pd
+import shap
+import streamlit as st
 from src.recommend.job_matcher import match_jobs
+from src.recommend.skill_recommender import (build_skill_demand_index,
+                                             recommend_skills)
+from src.utils.predict_utils import build_feature_vector
 
 st.set_page_config(page_title="Smart Employment Predictor - China", layout="wide")
 
@@ -76,12 +77,12 @@ if submit:
 
     with col1:
         st.subheader("High-demand probability")
-        prob = employment_model.predict_proba(X_user)[0][1]
+        prob = float(employment_model.predict_proba(X_user)[0][1])
         st.metric("Probability", f"{prob*100:.1f}%")
-        st.progress(min(max(prob, 0.0), 1.0))
+        st.progress(float(min(max(prob, 0.0), 1.0)))
 
         st.subheader("Salary estimate")
-        salary_pred = salary_model.predict(X_user)[0]
+        salary_pred = float(salary_model.predict(X_user)[0])
         st.metric("Estimated annual salary (USD)", f"{salary_pred:,.0f}")
 
     with col2:
